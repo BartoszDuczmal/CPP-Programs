@@ -5,7 +5,7 @@
 using namespace std;
 
 //Definicje
-float bmi = 0;
+float bmi = 0.0;
 bool gender();
 float weight();
 float height();
@@ -13,7 +13,7 @@ float height();
 int main() {
     cout << "Zad+ -> Program do obliczania BMI" << endl;
     gender();
-    bmi = weight() / (pow(2, (height() / 100 )));
+    bmi = weight() / (pow(2.0, (height() / 100.0 )));
     cout << "Twoje BMI wynosi " << bmi;
 }
 bool gender()
