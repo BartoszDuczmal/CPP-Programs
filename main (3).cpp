@@ -1,48 +1,110 @@
 #include <iostream>
-#include <string>
+#include <chrono>
+#include <cmath>
+
 using namespace std;
+using namespace std::chrono;
 
-void lineDefault(int, int, int, int);
-void lineText(string, string, int, int, int);
+int iterations = 0;
 
-int main() 
-{
-    int widthFrame = 100;
-    int spaceCharacter = 32;
-    int widthCharacter = 45;
-    int heightCharacter = 124;
-    int cornerCharacter[4] = { 43, 43, 43, 43 };
+bool isPrime(int p) {
+    if (p < 2) return false;
+    if (p == 2) return true;
+    if (p % 2 == 0) return false;
+
+    for (int i = 3; i * i <= p; i += 2) {
+        iterations++;
+        if (p % i == 0) {
+            return false;
+        }
+    }
+    return true;
+}
+bool isPrime_v1(int p) {
+    //if (p < 2) return false;
+    for (int i = 2; i < p; ++i) {
+        iterations++;
+        if (p % i == 0) {
+            return false;
+        }
+    }
+    return true;
+}
+bool isPrime_v2(int p) {
+    //if (p <= 1) return false;
     
-    lineDefault(widthFrame, widthCharacter, cornerCharacter[0], cornerCharacter[1]);
-    lineText("Maciej", "Gawron", widthFrame, spaceCharacter, heightCharacter);
+    for (int i = 2; i * i <= p; i += 1) {
+        iterations++;
+        if (p % i == 0) {
+            return false;
+        }
+    }
+    return true;
+}
+bool isPrime_v3(int p) {
+    //if (p < 2) return false;
+
+    for (int i = 2; i * i <= p; i += 1) {
+        iterations++;
+        if (p % i == 0) {
+            return false;
+        }
+    }
+    return true;
+}
+
+
+int main() {
+    int number;
+    cout << "Podaj liczbe do sprawdzenia: ";
+    cin >> number;
+    //------------------------------------------------------------------------------------
+    auto start = high_resolution_clock::now();
+
+    bool result = isPrime(number);
     
+    auto end = high_resolution_clock::now();
+    auto duration = duration_cast<nanoseconds>(end - start);
+
+    cout << "Czy liczba " << number << " jest pierwsza? " << (result ? "Tak" : "Nie") << endl;
+    cout << "Czas wykonania: " << duration.count() << " nanosekund." << endl;
+    cout << "Liczba iteracji: " << iterations << endl << endl;
+    iterations = 0;
+    //------------------------------------------------------------------------------------
+    auto start1 = high_resolution_clock::now();
+
+    bool result1 = isPrime_v1(number);
+    
+    auto end1 = high_resolution_clock::now();
+    auto duration1 = duration_cast<nanoseconds>(end1 - start1);
+
+    cout << "Czy liczba " << number << " jest pierwsza? " << (result1 ? "Tak" : "Nie") << endl;
+    cout << "Czas wykonania: " << duration1.count() << " nanosekund." << endl;
+    cout << "Liczba iteracji: " << iterations << endl << endl;
+    iterations = 0;
+    //------------------------------------------------------------------------------------
+    auto start2 = high_resolution_clock::now();
+
+    bool result2 = isPrime_v2(number);
+    
+    auto end2 = high_resolution_clock::now();
+    auto duration2 = duration_cast<nanoseconds>(end2 - start2);
+
+    cout << "Czy liczba " << number << " jest pierwsza? " << (result2 ? "Tak" : "Nie") << endl;
+    cout << "Czas wykonania: " << duration2.count() << " nanosekund." << endl;
+    cout << "Liczba iteracji: " << iterations << endl << endl;
+    iterations = 0;
+    //------------------------------------------------------------------------------------
+    auto start3 = high_resolution_clock::now();
+
+    bool result3 = isPrime_v3(number);
+    
+    auto end3 = high_resolution_clock::now();
+    auto duration3 = duration_cast<nanoseconds>(end3 - start3);
+
+    cout << "Czy liczba " << number << " jest pierwsza? " << (result3 ? "Tak" : "Nie") << endl;
+    cout << "Czas wykonania: " << duration3.count() << " nanosekund." << endl;
+    cout << "Liczba iteracji: " << iterations << endl << endl;
+
     return 0;
 }
-
-void lineDefault(int widthF, int widthChar, int cornerCharLeft, int cornerCharRight)
-{
-    string r = "";
-    r += (char)cornerCharLeft;
-    for(int i = 0; i < (widthF-2); i++)
-    {
-        r += (char)widthChar;
-    }
-    r += (char)cornerCharRight;
-    cout << r << endl;
-}
-void lineText(string toLeft, string toRight, int widthF, int spaceChar, int heightChar)
-{
-    string r = "";
-    r += (char)heightChar + " ";
-    r += toLeft;
-    widthF -= toLeft.length() + toRight.length() + 4;
-    for(int i = 0; i < widthF; i++)
-    {
-        r += (char)spaceChar;
-    }
-    r += toRight;
-    r += " " + (char)heightChar;
-    cout << r << endl;
-}
-
-
